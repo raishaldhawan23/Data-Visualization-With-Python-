@@ -17,7 +17,6 @@ This project focuses on enhancing the operations and processes of Supply Chain A
 To run this project, install the necessary Python libraries:
 
 <pre>
-  bash
   pip install pandas plotly dash
 </pre>
 
