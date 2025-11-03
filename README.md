@@ -1,12 +1,33 @@
 # From Sourcing to Revenue: An In-depth Analysis of Supply Chain for a Fashion and Beauty Startup
 
-## Executive Summary
-This project focuses on enhancing the operations and processes of Supply Chain Analytics through the creation of an interactive dashboard, which serves as the central feature. The dashboard provides insights into the startup’s supply chain data, uncovering hidden patterns that support strategic decision-making. It includes a comprehensive overview of the project's goals, theoretical background, and methodology, backed by visualization theories and analysis techniques. Links to the dataset and a reflective blog provide additional transparency and context for the project, detailing the design process, challenges encountered, and skills gained. The project delivers actionable insights aimed at assisting senior leaders in optimizing supply chain efficiency, cost management, and customer satisfaction.
+## 1. Project Background
+The startup operates in a fast-moving retail environment where demand is volatile, SKUs are diverse (skincare, haircare, cosmetics), and inventory ties up cash very quickly. The leadership team wanted a single analytical view of the supply chain to answer three things:
 
-## Project Structure
-- Supply_Chain_Data.csv: Contains structured supply chain data with 24 columns, including metrics for stock levels, lead times, product types, and more.
-- Supply_Chain_Dashboard.py: The primary Python code file for creating the interactive dashboard. It uses the Dash Framework with Plotly and Pandas to visualize data and track key metrics.
-- README.md: This document provides an overview of the project, the structure of the repository, and instructions for running the analysis.
+Are we stocking the right products in the right quantities?
+Are we moving inventory fast enough to protect margins?
+Where in the chain (manufacturing, transport, delivery) are we losing time or money?
+
+This project uses an interactive Python Dash dashboard to analyse the startup’s end-to-end supply chain data (inventory, SKUs, transport, manufacturing, customer segment) and turn it into decision-grade insights for senior managers. The focus is on improving operational efficiency, reducing logistics costs and preventing stockouts for high-velocity products.
+
+### Business objectives
+Optimise inventory levels without hurting availability.
+Improve supply chain efficiency by tracking lead times, shipping performance and transport modes.
+Link supply chain execution to revenue by analysing which products/segments actually drive sales.
+
+### Key Links
+A short video walk-through of the dashboard: https://drive.google.com/file/d/14H6E1DJoKgrToBqJ-90M06jrtEzZf8sW/view?usp=drivesdk
+
+## 2. Data Structure & Initial Checks
+Each row in the dataset represents a unique SKU entry with commercial and operational attributes.
+| Dimension      | Key Fields                                                   |
+| -------------- | ------------------------------------------------------------ |
+| Product        | SKU, Product Type, Price, Revenue Generated                  |
+| Inventory  | Stock Levels, Order Quantities, Production Volumes           |
+| **Operations** | Manufacturing Lead Time, Shipping Times, Transportation Mode |
+| **Quality**    | Defect Rates, Inspection Results                             |
+| **Customer**   | Customer Demographics, Location                              |
+| **Finance**    | Costs, Revenue, Lead Time                                    |
+
 
 ## Project Goals
 - Optimize Inventory Management: Balance stock levels to meet demand while avoiding overstock.
