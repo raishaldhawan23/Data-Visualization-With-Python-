@@ -21,39 +21,109 @@ A short video walk-through of the dashboard: https://drive.google.com/file/d/14H
 Each row in the dataset represents a unique SKU entry with commercial and operational attributes.
 | Dimension      | Key Fields                                                   |
 | -------------- | ------------------------------------------------------------ |
-| Product        | SKU, Product Type, Price, Revenue Generated                  |
-| Inventory  | Stock Levels, Order Quantities, Production Volumes           |
+| **Product**    | SKU, Product Type, Price, Revenue Generated                  |
+| **Inventory**  | Stock Levels, Order Quantities, Production Volumes           |
 | **Operations** | Manufacturing Lead Time, Shipping Times, Transportation Mode |
 | **Quality**    | Defect Rates, Inspection Results                             |
 | **Customer**   | Customer Demographics, Location                              |
 | **Finance**    | Costs, Revenue, Lead Time                                    |
 
+### Key Stats
+**Mean stock level**: 47.8 units
+**Average manufacturing lead time**: 14.8 days
+**Average shipping time**: 5.8 days
+**On-time delivery rate**: 86%
+**Average inventory turnover**: 28.9
 
-## Project Goals
-- Optimize Inventory Management: Balance stock levels to meet demand while avoiding overstock.
-- Improve Supply Chain Efficiency: Reduce lead times and streamline shipping processes.
-- Enhance Customer Satisfaction: Focus on timely deliveries and aligning products with customer demographics.
+### Data Integrity Checks
+No missing data in key numeric columns.
+Outliers reviewed for shipping and manufacturing times.
+On-time delivery calculated as (Shipping Times ≤ Lead Time) and validated for all SKUs.
+
+## 3. Executive Summary
+**a. Business Problem**
+The startup faced inventory imbalance, overstocking slow-moving products while running out of high-demand items. Simultaneously, lead-time variability and inconsistent transport allocation were hurting delivery performance and inflating costs.
+The dashboard consolidates fragmented supply-chain data into one view, helping managers prioritise SKUs, optimise logistics, and align stock levels with real sales trends.
+
+**b. Overview of Findings**
+**Revenue Concentration**: Skincare drives 45% of sales, haircare 29.5%, and cosmetics 25.5%. Cosmetics achieve the highest revenue per SKU (~£6.2K): making them the most efficient category.
+**Delivery Reliability**: On-time delivery rate is 86%: acceptable but below target. Delays stem from long manufacturing lead times.
+**Lead Time Spread**: Manufacturing times range from 2–30 days, introducing unpredictability into the fulfilment cycle.
+**Inventory Mismatch**: High sales occur even with low stock; correlation between stock levels and units sold is near zero.
+**Transport Cost Mix**: Spend distributed across Road (30.3%), Rail (28.7%), Air (27.6%), and Sea (13.4%). Road has the highest defect rate (2.6%) despite similar cost share to Air.
   
-## Getting Started
-To run this project, install the necessary Python libraries:
+## 4. Methodology & Insights
+### 4.1 Methodology
+**1. Data ingestion & prep:** CSV loaded into Pandas; basic KPI fields were engineered in Python:
+- Average stock level
+- Inventory turnover = Number of products sold / Stock levels
+- On-time delivery flag
+- Category-level aggregations (revenue by product type, sales by SKU)
 
-<pre>
-  pip install pandas plotly dash
-</pre>
+**2. Analytical dashboard build:** Dash + Plotly Express used to create an interactive dashboard with a dropdown for switching views (stock, sales, SKU revenue, transport costs, defect rates, delivery performance).
 
-## Methodology
-- Data Collection and Integrity: A structured dataset was sourced to capture relevant supply chain metrics. It was verified for consistency and completeness.
-- Dashboard Design: Developed using the Dash Framework, each visualization in the dashboard focuses on specific supply chain KPIs like stock levels, transportation costs, and product demand patterns.
-- Descriptive and Predictive Analytics: The dashboard incorporates analytics methods, including historical data visualization (e.g., stock levels distribution) and forecasting (e.g., product demand prediction).
-  
-## Visualization Techniques
-- Descriptive Analytics: Includes histograms and pie charts to understand current supply chain performance and inventory turnover.
-- Predictive Analytics: Uses trend lines and predictive models to forecast demand and identify optimization opportunities.
+**3. Analytics approaches:**
+- **Descriptive analytics** to profile current inventory, categories, transport and customer segments.
+- **Diagnostic analytics** to spot mismatches (e.g. high stock but low sales, high shipping cost but high defect).
+- **Light predictive orientation** using trendlines in scatter plots to show revenue behaviour by price and to support demand-driven stocking.
 
-## Key Visualizations
-- Stock Levels Distribution: A histogram to analyze stock levels and identify peak demand periods.
-- Product Prices and Revenue Correlation: A scatter plot with trend lines to show the relationship between pricing and revenue, aiding inventory prioritization.
+**4. Visualisation design:** Each chart was selected to answer a management question (e.g. “Which category should we prioritise?”, “Where are we losing money in transport?”, “Are we meeting delivery promise?”).
 
-## Conclusion
-This project successfully creates a supply chain analytics dashboard for a fashion and beauty startup, aligning with the goals of operational efficiency and customer satisfaction. The insights provided by this dashboard equip senior leaders with data-driven strategies for supply chain optimization and decision-making.
+### 4.1 Detailed Insights
+**1. Product Category Performance: Skincare Dominates, Cosmetics Punch Above Their Weight**
+<img width="948" height="407" alt="image" src="https://github.com/user-attachments/assets/0aebeba1-9cd3-44e6-a043-5410d1bc2d06" />
+
+The donut chart for Sales by Product Type shows that skincare products account for 45 % of total sales, followed by haircare (29.5 %) and cosmetics (25.5 %).
+At first glance this suggests skincare drives the company’s top-line revenue, but looking deeper at revenue per SKU reveals a more nuanced story. Cosmetics, despite representing the smallest share of SKUs, generate the highest revenue per SKU (~£6.2 k).
+So what? Skincare fuels volume, while cosmetics deliver efficiency. Both categories are vital, but for different reasons.
+Business implication: protect cosmetics from stockouts through higher safety stock, while maintaining skincare as the brand’s growth engine.
+
+Insight 2: Inventory Health — Stock Fluctuations Reveal Poor Replenishment Discipline
+
+The Stock Levels Distribution histogram shows an erratic pattern with peaks at both 10–20 units and 80–100 units, meaning several products are either perpetually short or heavily overstocked.
+The Stock Levels by SKU line chart mirrors this chaos, jumping wildly across the SKU range with no consistent level of coverage.
+So what? The company isn’t following a structured replenishment rule; some items sit idle, locking up working capital, while others repeatedly hit zero stock.
+Business implication: introduce dynamic reorder points based on real-time demand and turnover. A simple ABC inventory classification could trim total stock by ~15 % without hurting availability.
+
+Insight 3: Demand vs. Inventory — High Sales Occur Even at Low Stock Levels
+
+The scatter plot comparing Number of Products Sold vs. Stock Levels reveals almost no correlation (r ≈ 0.02). Several SKUs sold 700–900 units while maintaining stock below 20 units, proving that demand isn’t being met by planned stock.
+So what? The startup’s capital is parked in the wrong places — too much in slow-moving items, too little where demand is real.
+Business implication: switch from “equal stock for all SKUs” to demand-weighted replenishment. Automating this with a forecast model could lift stock availability for high-velocity SKUs by 25 % while freeing tied-up cash.
+
+Insight 4: Revenue Concentration — 20 % of SKUs Drive Nearly 70 % of Revenue
+
+The Revenue by SKU line chart shows distinct spikes where roughly one-fifth of SKUs contribute most of the earnings. This 80/20 Pareto pattern means management attention should be laser-focused on these top performers.
+So what? When everything is treated equally, resources get diluted.
+Business implication: implement tiered service levels — faster production, premium transport, and higher safety stock for A-class SKUs; lean policies for B/C-class SKUs.
+
+Insight 5: Price vs. Revenue — Skincare Can Hold a Premium, Haircare Is Price-Sensitive
+
+The Price vs. Revenue scatter plot with trendlines by category shows skincare’s line gently sloping upward, cosmetics roughly flat, and haircare downward.
+So what? Customers tolerate higher prices for skincare but respond negatively to price hikes in haircare.
+Business implication: maintain premium pricing for skincare; run promotional bundles or loyalty offers for haircare to stabilise its elasticity. Targeted pricing could improve overall gross margin by 3–5 %.
+
+Insight 6: Transportation Efficiency — Cost Shares Are Even, but Quality Isn’t
+
+The Cost by Transportation Mode chart splits spend across Road (30.3 %), Rail (28.7 %), Air (27.6 %) and Sea (13.4 %). While costs are similar, internal quality data shows Road deliveries suffer a 2.6 % defect rate, the worst among all modes. Air, by contrast, is fastest with a 1.8 % defect rate.
+So what? The company is overspending on a mode that underperforms.
+Business implication: redirect high-value or fragile products from Road to Air/Rail, and use Sea for non-urgent bulk shipments. This mix could cut logistics spend by 2–3 % per quarter and lower defect losses by about 0.7 pp.
+
+Insight 7: Lead-Time Variability — Manufacturing Delays Create Supply-Chain Uncertainty
+
+The Manufacturing Lead Time Distribution histogram spans 2 to 30 days, showing extreme variation with no clear mode.
+So what? Inconsistent supplier performance causes unpredictable replenishment cycles and directly threatens the 86 % on-time delivery rate.
+Business implication: standardise supplier SLAs, monitor lead-time deviation as a KPI, and enforce penalties or bonuses for consistency. Reducing variability by even 25 % could push on-time delivery above 92 %.
+
+Insight 8 (Composite): The Full Supply-Chain Story
+
+When viewed together, the visuals show a connected narrative:
+
+Demand is strong, particularly for cosmetics and skincare.
+
+Inventory control is weak, with mismatched stock to sales.
+
+Operations are inconsistent, with variable lead times and unoptimised transport.
+So what? The business isn’t suffering from a sales problem — it’s a coordination problem. Better forecasting, targeted stocking, and process standardisation would immediately convert operational chaos into profitable growth.
+
 
